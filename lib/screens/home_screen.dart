@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blog_explorer/services/api_services.dart';
 import 'package:flutter_blog_explorer/widgets/image_card.dart';
@@ -14,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Map<String, dynamic>> blogs = [];
 
   void fetchBlogs() async {
-    blogs = await _apiService.fetchBlogs();
+    blogs = await _apiService.fetchBlogs(context);
     setState(() {});
   }
 
@@ -29,10 +30,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Home Screen'),
+          title: Image.asset(
+            'assets/images/logo.png',
+            height: 45,
+          ),
         ),
         body: StreamBuilder(
-          stream: _apiService.fetchBlogs().asStream(),
+          stream: _apiService.fetchBlogs(context).asStream(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(

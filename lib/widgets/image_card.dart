@@ -34,6 +34,7 @@ class CustomImageCard extends StatelessWidget {
             CachedNetworkImage(
               fit: BoxFit.cover,
               height: 300,
+              width: double.infinity,
               imageUrl: imageUrl,
               placeholder: (context, url) =>
                   const Center(child: CircularProgressIndicator()),
