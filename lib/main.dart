@@ -8,7 +8,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   sqfliteFfiInit();
   await dotenv.load(fileName: '.env');
-  // databaseFactory = databaseFactoryFfi;
+  // if (kIsWeb) databaseFactory = databaseFactoryFfi;
   runApp(const MyApp());
 }
 

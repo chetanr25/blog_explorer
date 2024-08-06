@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blog_explorer/services/api_services.dart';
 import 'package:flutter_blog_explorer/widgets/image_card.dart';
