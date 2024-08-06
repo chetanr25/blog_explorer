@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_declarations, avoid_print, use_build_context_synchronously
+// ignore_for_file: prefer_const_declarations, avoid_print, use_build_context_synchronously, depend_on_referenced_packages
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_blog_explorer/utils/custom_snackbar.dart';
@@ -33,6 +33,25 @@ void createDatabase(res) async {
   Database database = await openDatabase(
     path.join(databasesPath, 'blog_database.db'),
     version: 1,
+    onCreate: (db, version) async {
+      print('Creating database');
+      await db.execute(
+        'CREATE TABLE blogs_database(id INTEGER PRIMARY KEY, title TEXT, image_url TEXT)',
+      );
+    },
+    onUpgrade: (db, oldVersion, newVersion) async {
+      print('Upgrading database from $oldVersion to $newVersion');
+      await db.execute('DROP TABLE blogs_database');
+      await db.execute(
+        'CREATE TABLE blogs_database(id INTEGER PRIMARY KEY, title TEXT, image_url TEXT)',
+      );
+      for (var blog in res) {
+        print(blog);
+        await db.execute(
+          'INSERT INTO blogs_database(id, title, image_url) VALUES(${blog['id']}, "${blog['title']}", "${blog['image_url']}")',
+        );
+      }
+    },
   );
   await database.execute('DROP TABLE blogs_database');
   await database.execute(
