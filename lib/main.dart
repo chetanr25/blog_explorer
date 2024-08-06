@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blog_explorer/screens/first_screen.dart';
 import 'package:flutter_blog_explorer/screens/home_screen.dart';
 import 'package:flutter_blog_explorer/utils/theme.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Blog Explorer',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
-      home: const HomeScreen(),
+      home: const FirstScreen(),
     );
   }
 }

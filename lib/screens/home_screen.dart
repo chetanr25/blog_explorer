@@ -39,76 +39,88 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        endDrawer: Drawer(
-          child: ListView(
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text('Menu'),
-              ),
-              ListTile(
-                title: const Text('Home'),
-                onTap: () {
-                  Navigator.of(context).pushNamed('/');
-                },
-              ),
-              ListTile(
-                title: const Text('Favorites'),
-                onTap: () {
-                  Navigator.of(context).pushNamed('/favorites');
-                },
-              ),
-            ],
-          ),
+      /*
+      appBar: AppBar(
+        title: Image.asset(
+          'assets/images/logo.png',
+          height: 45,
         ),
-        appBar: AppBar(
-          title: Image.asset(
-            'assets/images/logo.png',
-            height: 45,
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                prefs?.clear();
+        // actions: [
+        //   IconButton(
+        //     style: ButtonStyle(
+        //       backgroundColor: MaterialStateProperty.all<Color?>(Colors.white),
+        //     ),
+        //     onPressed: () {
+        //       Scaffold.of(context).openEndDrawer();
+        //     },
+        //     icon: const Icon(
+        //       Icons.menu, // Custom icon for the drawer button
+        //       color: Colors.black,
+        //       size: 30,
+        //     ),
+        //   ),
+        // ],
+      ),
+      */
+      body: StreamBuilder(
+        stream: _apiService.fetchBlogs(context).asStream(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 15, left: 16, right: 16),
+                  child: CustomImageCard(
+                    imageUrl: snapshot.data[index]['image_url'],
+                    title: snapshot.data[index]['title'],
+                    id: snapshot.data[index]['id'],
+                  ),
+                );
               },
-              icon: const Icon(
-                Icons.delete,
-                color: Colors.red,
-                size: 30,
+            );
+          }
+        },
+      ),
+/*
+      endDrawer: Drawer(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20))),
+        child: ListView(
+          children: [
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                color: Colors.blue,
               ),
+              child: Image.asset(
+                'assets/images/logo.png',
+                height: 45,
+              ),
+            ),
+            ListTile(
+              title: const Text('Home'),
+              onTap: () {
+                Navigator.of(context).pushNamed('/');
+              },
+            ),
+            ListTile(
+              title: const Text('Favorites'),
+              onTap: () {
+                Navigator.of(context).pushNamed('/favorites');
+              },
             ),
           ],
         ),
-        body: StreamBuilder(
-          stream: _apiService.fetchBlogs(context).asStream(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              );
-            } else {
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding:
-                        const EdgeInsets.only(top: 15, left: 16, right: 16),
-                    child: CustomImageCard(
-                      imageUrl: snapshot.data[index]['image_url'],
-                      title: snapshot.data[index]['title'],
-                      id: snapshot.data[index]['id'],
-                    ),
-                  );
-                },
-              );
-            }
-          },
-        ));
+      ),
+    */
+    );
   }
 }
