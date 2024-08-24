@@ -5,7 +5,7 @@
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/chetanr250/flutter_blog_explorer.git
+   git clone https://github.com/chetanr25/flutter_blog_explorer.git
    ```
 
 2. Navigate to the project directory:
